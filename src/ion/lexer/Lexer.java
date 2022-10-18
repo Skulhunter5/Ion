@@ -77,12 +77,11 @@ public class Lexer {
 
     private char advance() {
         position++;
-        this.column++;
-        c = (position < sourceCode.length()) ? sourceCode.charAt(position) : '\0';
         if(c == '\n') {
             this.column = 1;
             this.line++;
-        }
+        } else this.column++;
+        c = (position < sourceCode.length()) ? sourceCode.charAt(position) : '\0';
         return c;
     }
 
