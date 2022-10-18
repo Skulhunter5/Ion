@@ -1,5 +1,10 @@
 package ion.lexer;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.util.Map.entry;
+
 public enum TokenType {
     
     // Syntax tokens
@@ -60,6 +65,57 @@ public enum TokenType {
 
     public boolean isAssignmentOperator() {
         return this.ordinal() >= PLUS_EQ.ordinal() && this.ordinal() <= PERCENT_EQ.ordinal();
+    }
+
+    // Source strings
+
+    private static final Map<TokenType, String> sourceStrings = new HashMap<>(Map.ofEntries(
+        // Syntax tokens
+        // - SEMICOLON
+        entry(TokenType.SEMICOLON, ";"),
+        // - Parenthesis, Braces and Brackes
+        entry(TokenType.LPAREN, "("),
+        entry(TokenType.RPAREN, ")"),
+        entry(TokenType.LBRACE, "{"),
+        entry(TokenType.RBRACE, "}"),
+        entry(TokenType.LBRACK, "["),
+        entry(TokenType.RBRACK, "]"),
+        // IDENTIFIER
+        entry(TokenType.IDENTIFIER, "IDENTIFIER"),
+        entry(TokenType.KEYWORD, "KEYWORD"),
+        // Numbers
+        entry(TokenType.INTEGER, "INTEGER"),
+        entry(TokenType.FLOAT, "FLOAT"),
+        // SINGLE_EQ
+        entry(TokenType.ASSIGN, "="),
+        // Comparison operator tokens
+        entry(TokenType.EQ, "=="),
+        entry(TokenType.NEQ, "!="),
+        entry(TokenType.LT, "<"),
+        entry(TokenType.GT, ">"),
+        entry(TokenType.LTEQ, "<="),
+        entry(TokenType.GTEQ, ">="),
+        // Logical operator tokens
+        entry(TokenType.LAND, "&&"),
+        entry(TokenType.LOR, "||"),
+        // Arithmetic operator tokens
+        entry(TokenType.PLUS, "+"),
+        entry(TokenType.MINUS, "-"),
+        entry(TokenType.STAR, "*"),
+        entry(TokenType.SLASH, "/"),
+        entry(TokenType.PERCENT, "%"),
+        // Arithmetic operator-equals tokens
+        entry(TokenType.PLUS_EQ, "+="),
+        entry(TokenType.MINUS_EQ, "-="),
+        entry(TokenType.STAR_EQ, "*="),
+        entry(TokenType.SLASH_EQ, "/="),
+        entry(TokenType.PERCENT_EQ, "%="),
+        // EOF
+        entry(TokenType.EOF, "EOF")
+    ));
+
+    public String getSourceString() {
+        return sourceStrings.get(this);
     }
 
 }

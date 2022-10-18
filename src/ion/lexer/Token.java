@@ -20,6 +20,11 @@ public class Token {
         this.position = position;
     }
 
+    public String getSourceString() {
+        if(value != null) return value;
+        return type.getSourceString();
+    }
+
     @Override
     public String toString() {
         return "<TOKEN " + type + (value != null ? (" '" + value + "'>") : ">");
