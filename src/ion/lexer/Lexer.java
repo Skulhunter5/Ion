@@ -55,8 +55,14 @@ public class Lexer {
     ));
 
     private static final HashSet<String> KEYWORDS = new HashSet<>(Arrays.asList(
+        // TEMPORARY: variables and functions
         "var",
-        "func"
+        "func",
+        // Control statements
+        // - If
+        "if", "else",
+        // - While loops
+        "while", "do"
     ));
 
     // @formatter:on

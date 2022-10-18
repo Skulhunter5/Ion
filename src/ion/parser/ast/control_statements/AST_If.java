@@ -1,11 +1,15 @@
-package ion.parser.ast.controlstatements;
+package ion.parser.ast.control_statements;
 
 import ion.parser.ast.AST;
 import ion.parser.ast.ASTType;
 import ion.parser.ast.expressions.AST_Expression;
 
 public class AST_If extends AST {
+    
+    private static int nextId = 0;
+    private static int makeId() { return nextId++; }
 
+    private final int id;
     private final AST_Expression condition;
     private final AST ifBlock;
     private final AST elseBlock; 
@@ -13,16 +17,29 @@ public class AST_If extends AST {
     public AST_If(AST_Expression condition, AST ifBlock, AST elseBlock) {
         super(ASTType.IF);
 
+        id = makeId();
+
         this.condition = condition;
         this.ifBlock = ifBlock;
         this.elseBlock = elseBlock;
     }
 
+    public int getId() { return id; }
+
     @Override
     public String generateAssembly() {
-        System.err.println("Not implemented: AST_If.generateAssembly()");
-        System.exit(1);
-        return null;
+        String asm = "";
+        asm += condition.generateAssembly();
+        asm += "    cmp rax, 0\n";
+        asm += "    je if_" + id + "_else\n";
+        asm += ifBlock.generateAssembly();
+        asm += "    jmp if_" + id + "_end\n";
+        if(elseBlock != null) {
+            asm += "if_" + id + "_else:\n";
+            asm += elseBlock.generateAssembly();
+        }
+        asm += "if_" + id + "_end:\n";
+        return asm;
     }
 
     @Override

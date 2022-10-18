@@ -4,7 +4,7 @@ public enum ASTType {
     // Block
     BLOCK,
     // Control Statements
-    IF,
+    IF, WHILE, DO_WHILE,
     // Values
     VARIABLE_ACCESS, INTEGER, FLOAT,
     // Assignment

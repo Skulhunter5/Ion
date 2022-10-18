@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ion.parser.ast.*;
-import ion.parser.ast.controlstatements.AST_If;
+import ion.parser.ast.control_statements.AST_DoWhile;
+import ion.parser.ast.control_statements.AST_If;
+import ion.parser.ast.control_statements.AST_While;
 import ion.parser.ast.expressions.*;
 import ion.utils.Function;
 import ion.utils.Variable;
@@ -173,6 +175,26 @@ public class Parser {
                         elseBlock = parseBlock();
                     }
                     return new AST_If(condition, ifBlock, elseBlock);
+                }
+                case "while": {
+                    advance(); // KEYWORD "while"
+                    eat(TokenType.LPAREN);
+                    AST_Expression condition = parseExpression();
+                    eat(TokenType.RPAREN);
+                    AST body = parseBlock();
+                    return new AST_While(condition, body);
+                }
+                case "do": {
+                    advance(); // KEYWORD "do"
+                    AST body = parseBlock();
+                    if(current.type != TokenType.KEYWORD || !"while".equals(current.value))
+                        ErrorSystem.AddError_i(new UnexpectedTokenError("while", current.getSourceString(), current.position));
+                    advance(); // KEYWORD "while"
+                    eat(TokenType.LPAREN);
+                    AST_Expression condition = parseExpression();
+                    eat(TokenType.RPAREN);
+                    eat(TokenType.SEMICOLON); // TODO: check if the do-while-loop requires the semicolon itself or if it comes from something else like a normal statement for example
+                    return new AST_DoWhile(condition, body);
                 }
                 default: {
                     // TODO: implement error for this case
