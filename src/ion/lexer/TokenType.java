@@ -3,7 +3,12 @@ package ion.lexer;
 public enum TokenType {
     
     // Syntax tokens
+    // - SEMICOLON
     SEMICOLON,
+    // - Parenthesis, Braces and Brackes
+    LPAREN, RPAREN,
+    LBRACE, RBRACE,
+    LBRACK, RBRACK,
     // IDENTIFIER
     IDENTIFIER,
     KEYWORD,
@@ -24,12 +29,8 @@ public enum TokenType {
     // - Multiplicative operator tokens
     STAR, SLASH, PERCENT,
 
-    // Operator-equals tokens
+    // Arithmetic operator-equals tokens
     PLUS_EQ, MINUS_EQ, STAR_EQ, SLASH_EQ, PERCENT_EQ,
-    // Parenthesis, Braces and Brackes
-    LPAREN, RPAREN,
-    LBRACE, RBRACE,
-    LBRACK, RBRACK,
     // EOF
     EOF;
 

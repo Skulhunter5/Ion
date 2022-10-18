@@ -17,8 +17,13 @@ public class Lexer {
     // @formatter:off
 
     private static final Map<Character, TokenType> ONE_CHAR_TOKENS = new HashMap<>(Map.ofEntries(
-        // SEMICOLON
+        // Syntax tokens
+        // - SEMICOLON
         entry(';', TokenType.SEMICOLON),
+        // - Parenthesis, Braces and Brackes
+        entry('(', TokenType.LPAREN), entry(')', TokenType.RPAREN),
+        entry('{', TokenType.LBRACE), entry('}', TokenType.RBRACE),
+        entry('[', TokenType.LBRACK), entry(']', TokenType.RBRACK),
         // SINGLE_EQ
         entry('=', TokenType.ASSIGN),
         // Comparison operator tokens
@@ -29,11 +34,7 @@ public class Lexer {
         entry('-', TokenType.MINUS),
         entry('*', TokenType.STAR),
         entry('/', TokenType.SLASH),
-        entry('%', TokenType.PERCENT),
-        // Parenthesis, Braces and Brackes
-        entry('(', TokenType.LPAREN), entry(')', TokenType.RPAREN),
-        entry('{', TokenType.LBRACE), entry('}', TokenType.RBRACE),
-        entry('[', TokenType.LBRACK), entry(']', TokenType.RBRACK)
+        entry('%', TokenType.PERCENT)
     ));
 
     private static final Map<String, TokenType> TWO_CHAR_TOKENS = new HashMap<>(Map.ofEntries(
