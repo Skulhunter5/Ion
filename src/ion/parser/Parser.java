@@ -77,7 +77,7 @@ public class Parser {
 
     private void eat(TokenType type) {
         if(current.type != type)
-            ErrorSystem.AddError_i(new UnexpectedTokenError(type, current.type, current.position)); // TODO: maybe change to ErrorSystem.AddError_s()
+            ErrorSystem.AddError_i(new UnexpectedTokenError(type.getSourceString(), current.type.getSourceString(), current.position)); // TODO: maybe change to ErrorSystem.AddError_s()
         advance();
     }
 
@@ -110,7 +110,7 @@ public class Parser {
                     eat(TokenType.SEMICOLON);
                     continue;
                 } else; // TODO: implement error for this problem (ErrorSystem.AddError_i(new UnexpectedTokenError(current, "declaration keyword"));)
-            } else ErrorSystem.AddError_i(new UnexpectedTokenError(TokenType.KEYWORD, current.type, current.position)); // TODO: maybe change to ErrorSystem.AddError_s()
+            } else ErrorSystem.AddError_i(new UnexpectedTokenError(TokenType.KEYWORD.getSourceString(), current.type.getSourceString(), current.position)); // TODO: maybe change to ErrorSystem.AddError_s()
         }
     }
 
