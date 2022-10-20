@@ -27,7 +27,7 @@ public class Token {
 
     @Override
     public String toString() {
-        return "<TOKEN " + type + (value != null ? (" '" + value + "'>") : ">");
+        return "<TOKEN " + type + (value != null ? (" '" + value + "'") : "") + " position='" + position + "'>";
     }
 
 }
