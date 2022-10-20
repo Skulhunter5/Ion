@@ -1,6 +1,7 @@
 package ion.parser.ast.expressions;
 
 import ion.parser.ast.ASTType;
+import ion.utils.DataType;
 
 public class AST_Integer extends AST_Expression {
     
@@ -14,6 +15,11 @@ public class AST_Integer extends AST_Expression {
     @Override
     public String generateAssembly() {
         return "    mov rax, " + Integer.parseInt(value) + "\n";
+    }
+
+    @Override
+    public DataType getResultingDataType() {
+        return DataType.I_UINT64;
     }
 
     @Override

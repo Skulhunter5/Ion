@@ -9,6 +9,7 @@ public abstract class AST {
     }
 
     public abstract String generateAssembly();
+    public abstract void typeCheck();
 
     @Override
     public String toString() {

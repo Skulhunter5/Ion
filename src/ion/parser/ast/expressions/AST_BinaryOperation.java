@@ -3,6 +3,7 @@ package ion.parser.ast.expressions;
 import ion.lexer.TokenType;
 import ion.parser.ast.ASTType;
 import ion.utils.Constants;
+import ion.utils.DataType;
 
 public class AST_BinaryOperation extends AST_Expression {
 
@@ -78,6 +79,22 @@ public class AST_BinaryOperation extends AST_Expression {
                 System.exit(1);
         }
         return asm;
+    }
+
+    @Override
+    public DataType getResultingDataType() {
+        DataType aType = a.getResultingDataType();
+        DataType bType = b.getResultingDataType();
+        boolean isEqual = aType.equals(bType);
+        if(operator.isLogicalOperator()) {
+            if(aType.type == DataType.BOOLEAN && bType.type == DataType.BOOLEAN) return DataType.I_BOOLEAN;
+        } else if(operator.isArithmeticOperator()) {
+            if(isEqual) {
+                if(aType.type == DataType.UINT64) return DataType.I_UINT64;
+            }
+        }
+        System.out.println("Invalid DataTypes for BinaryOperation: operator=" + operator + "a=" + aType + " b=" + bType);
+        return null;
     }
 
     @Override

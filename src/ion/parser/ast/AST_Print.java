@@ -1,7 +1,6 @@
 package ion.parser.ast;
 
 import ion.parser.ast.expressions.AST_Expression;
-
 public class AST_Print extends AST {
 
     private final AST_Expression expression;
@@ -17,6 +16,11 @@ public class AST_Print extends AST {
         asm += expression.generateAssembly();
         asm += "    call put_u\n";
         return asm;
+    }
+
+    @Override
+    public void typeCheck() {
+        expression.typeCheck();
     }
 
     @Override

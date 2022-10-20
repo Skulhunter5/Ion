@@ -43,6 +43,13 @@ public class AST_If extends AST {
     }
 
     @Override
+    public void typeCheck() {
+        condition.typeCheck();
+        ifBlock.typeCheck();
+        elseBlock.typeCheck();
+    }
+
+    @Override
     public String toString() {
         return super.toString() + " condition=" + condition + " ifBlock=" + ifBlock + (elseBlock != null ? " elseBlock=" + elseBlock + ">" : ">");
     }

@@ -19,6 +19,11 @@ public class AST_Block extends AST {
     }
 
     @Override
+    public void typeCheck() {
+        for(AST statement : statements) statement.typeCheck();
+    }
+
+    @Override
     public String toString() {
         ArrayList<String> statementStrings = new ArrayList<>();
         for(AST child : statements) statementStrings.add(child.toString());

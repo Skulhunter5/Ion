@@ -37,6 +37,12 @@ public class AST_DoWhile extends AST {
     }
 
     @Override
+    public void typeCheck() {
+        condition.typeCheck();
+        body.typeCheck();
+    }
+
+    @Override
     public String toString() {
         return super.toString() + " condition=" + condition + " body=" + body + ">";
     }

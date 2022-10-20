@@ -14,6 +14,8 @@ public class AssemblyFrontend extends Frontend<String> {
 
     @Override
     public String generate() {
+        for(Function function : functions.values()) function.getBody().typeCheck();
+
         if(!functions.containsKey("main"))
             ErrorSystem.AddError_i(new MissingMainFunctionError()); // TODO: maybe change this to ErrorSystem.AddError_s()
 
@@ -66,6 +68,7 @@ public class AssemblyFrontend extends Frontend<String> {
 
         asm += "global _start\n";
         asm += "_start:\n";
+
         // TODO: prepare the program arguments to pass them on to the main function
         asm += "    call func_" + functions.get("main").getId() + "\n";
 

@@ -1,6 +1,7 @@
 package ion.parser.ast.expressions;
 
 import ion.parser.ast.ASTType;
+import ion.utils.DataType;
 import ion.utils.Function;
 
 public class AST_FunctionCall extends AST_Expression {
@@ -17,6 +18,11 @@ public class AST_FunctionCall extends AST_Expression {
         return "    call func_" + function.getId() + "\n";
     }
 
+    @Override
+    public DataType getResultingDataType() {
+        return null;
+    }
+    
     @Override
     public String toString() {
         return super.toString() + " function=" + function + ">";

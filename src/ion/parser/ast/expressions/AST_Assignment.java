@@ -2,6 +2,7 @@ package ion.parser.ast.expressions;
 
 import ion.lexer.TokenType;
 import ion.parser.ast.ASTType;
+import ion.utils.DataType;
 import ion.utils.Variable;
 
 public class AST_Assignment extends AST_Expression {
@@ -60,6 +61,17 @@ public class AST_Assignment extends AST_Expression {
                 System.exit(1);
         }
         return asm;
+    }
+
+    @Override
+    public DataType getResultingDataType() {
+        DataType varType = variable.getDataType();
+        DataType valueType = valueExpression.getResultingDataType();
+        if(varType.equals(valueType)) {
+            if(varType.type == DataType.UINT64) return varType;
+        }
+        System.out.println("Invalid DataTypes for Assignment: var=" + varType + " value=" + valueType);
+        return null;
     }
 
     @Override

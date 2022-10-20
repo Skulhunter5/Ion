@@ -9,6 +9,7 @@ import ion.parser.ast.control_statements.AST_DoWhile;
 import ion.parser.ast.control_statements.AST_If;
 import ion.parser.ast.control_statements.AST_While;
 import ion.parser.ast.expressions.*;
+import ion.utils.DataType;
 import ion.utils.Function;
 import ion.utils.Variable;
 import ion.errorsystem.ErrorSystem;
@@ -108,7 +109,7 @@ public class Parser {
                     advance(); // KEYWORD "var"
                     Token identifier = current;
                     eat(TokenType.IDENTIFIER);
-                    registerVariable(identifier);
+                    registerVariable(identifier, DataType.I_UINT64);
                     eat(TokenType.SEMICOLON);
                     continue;
                 } else; // TODO: implement error for this problem (ErrorSystem.AddError_i(new UnexpectedTokenError(current, "declaration keyword"));)
@@ -153,7 +154,7 @@ public class Parser {
                     advance(); // KEYWORD "var"
                     Token identifier = current;
                     eat(TokenType.IDENTIFIER);
-                    Variable variable = registerVariable(identifier);
+                    Variable variable = registerVariable(identifier, DataType.I_UINT64);
                     if(current.type == TokenType.SEMICOLON) {
                         advance(); // SEMICOLON
                         return null;
@@ -289,10 +290,10 @@ public class Parser {
         }
     }
 
-    private Variable registerVariable(Token identifier) {
+    private Variable registerVariable(Token identifier, DataType dataType) {
         if(variables.containsKey(identifier.value))
             ErrorSystem.AddError_i(new IdentifierRedeclarationError(variables.get(identifier.value).getIdentifierToken(), identifier.position)); // TODO: change to ErrorSystem.AddError_s()
-        Variable variable = new Variable(identifier);
+        Variable variable = new Variable(identifier, dataType);
         variables.put(identifier.value, variable);
         return variable;
     }
