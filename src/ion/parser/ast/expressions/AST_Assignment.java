@@ -67,9 +67,8 @@ public class AST_Assignment extends AST_Expression {
     public DataType getResultingDataType() {
         DataType varType = variable.getDataType();
         DataType valueType = valueExpression.getResultingDataType();
-        if(varType.equals(valueType)) {
-            if(varType.type == DataType.UINT64) return varType;
-        }
+        // TODO: check this again
+        if(varType.equals(valueType)) return varType;
         System.out.println("Invalid DataTypes for Assignment: var=" + varType + " value=" + valueType);
         return null;
     }

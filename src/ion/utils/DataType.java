@@ -1,5 +1,8 @@
 package ion.utils;
 
+import ion.lexer.Token;
+import ion.lexer.TokenType;
+
 public class DataType {
     
     public static final int VOID = 0;
@@ -18,6 +21,17 @@ public class DataType {
         this.type = type;
     }
 
+    public static DataType parseDataType(Token token) {
+        assert token.type == TokenType.IDENTIFIER;
+        // TODO: improve this code
+        switch(token.value) {
+            case "uint64": return DataType.I_UINT64;
+            case "bool": return DataType.I_BOOLEAN;
+            case "func": return DataType.I_FUNCTION;
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof DataType)) return false;
@@ -28,7 +42,8 @@ public class DataType {
     private static final String[] dataTypeStrings = new String[] {
         "void",
         "uint64",
-        "bool"
+        "bool",
+        "func"
     };
 
     @Override

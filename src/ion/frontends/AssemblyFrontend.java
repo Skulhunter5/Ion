@@ -14,6 +14,7 @@ public class AssemblyFrontend extends Frontend<String> {
 
     @Override
     public String generate() {
+        declaration.typeCheck();
         for(Function function : functions.values()) function.getBody().typeCheck();
 
         if(!functions.containsKey("main"))
@@ -68,6 +69,7 @@ public class AssemblyFrontend extends Frontend<String> {
 
         asm += "global _start\n";
         asm += "_start:\n";
+        asm += declaration.generateAssembly();
 
         // TODO: prepare the program arguments to pass them on to the main function
         asm += "    call func_" + functions.get("main").getId() + "\n";

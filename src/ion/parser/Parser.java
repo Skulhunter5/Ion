@@ -47,7 +47,7 @@ public class Parser {
         entry(TokenType.SLASH, 6),
         entry(TokenType.PERCENT, 6)
     ));
-
+    
     // @formatter:on
 
     private final ArrayList<Token> tokens;
@@ -89,11 +89,16 @@ public class Parser {
     }
 
     public ParserResult parse() {
-        parseDeclaration();
-        return new ParserResult(variables, functions);
+        AST_Block declaration = parseDeclaration();
+        return new ParserResult(variables, declaration, functions);
     }
 
-    private void parseDeclaration() {
+    private DataType parseDataType() {
+        return DataType.parseDataType(advanceWithLast());
+    }
+
+    private AST_Block parseDeclaration() {
+        ArrayList<AST> statements = new ArrayList<AST>();
         while(current.type != TokenType.EOF) {
             if(current.type == TokenType.KEYWORD) {
                 if(current.value.equals("func")) {
@@ -109,12 +114,34 @@ public class Parser {
                     advance(); // KEYWORD "var"
                     Token identifier = current;
                     eat(TokenType.IDENTIFIER);
-                    registerVariable(identifier, DataType.I_UINT64);
+                    eat(TokenType.COLON);
+                    DataType dataType = parseDataType();
+                    Variable variable = registerVariable(identifier, dataType);
+                    if(current.type == TokenType.ASSIGN) {
+                        advance(); // ASSIGN
+                        AST_Expression valueExpression = parseDeclarationExpression();
+                        statements.add(new AST_Assignment(TokenType.ASSIGN, variable, valueExpression));
+                    }
                     eat(TokenType.SEMICOLON);
                     continue;
                 } else; // TODO: implement error for this problem (ErrorSystem.AddError_i(new UnexpectedTokenError(current, "declaration keyword"));)
             } else ErrorSystem.AddError_i(new UnexpectedTokenError(TokenType.KEYWORD.getSourceString(), current.type.getSourceString(), current.position)); // TODO: maybe change to ErrorSystem.AddError_s()
         }
+        return new AST_Block(statements);
+    }
+
+    private AST_Expression parseDeclarationExpression() {
+        if(isKeyword("func")) {
+            advance(); // KEYWORD "func"
+            Token identifier = current;
+            eat(TokenType.IDENTIFIER);
+            eat(TokenType.LPAREN);
+            eat(TokenType.RPAREN);
+            AST body = parseBlock();
+            Function function = registerFunction(identifier, body);
+            return new AST_FunctionAccess(function);
+        }
+        return parseExpression();
     }
 
     private AST parseBlock() {
@@ -152,9 +179,11 @@ public class Parser {
             switch(current.value) {
                 case "var": { // TODO: rework this parsing step
                     advance(); // KEYWORD "var"
+                    eat(TokenType.COLON);
+                    DataType dataType = parseDataType();
                     Token identifier = current;
                     eat(TokenType.IDENTIFIER);
-                    Variable variable = registerVariable(identifier, DataType.I_UINT64);
+                    Variable variable = registerVariable(identifier, dataType);
                     if(current.type == TokenType.SEMICOLON) {
                         advance(); // SEMICOLON
                         return null;
@@ -275,7 +304,9 @@ public class Parser {
                 } else if(current.type == TokenType.LPAREN) {
                     eat(TokenType.LPAREN);
                     eat(TokenType.RPAREN);
-                    return new AST_FunctionCall(getFunction(identifier));
+                    Function function = getFunction(identifier);
+                    if(function != null) return new AST_FunctionCall(function);
+                    return new AST_FunctionCall(getVariable(identifier));
                 }
 
                 return new AST_VariableAccess(getVariable(identifier));
@@ -313,8 +344,8 @@ public class Parser {
     }
 
     private Function getFunction(Token identifier) {
-        if(!functions.containsKey(identifier.value))
-            ErrorSystem.AddError_i(new UndeclaredIdentifierError(identifier)); // TODO: change to ErrorSystem.AddError_s()
+        /* if(!functions.containsKey(identifier.value))
+            ErrorSystem.AddError_i(new UndeclaredIdentifierError(identifier)); // TODO: change to ErrorSystem.AddError_s() */
         return functions.get(identifier.value);
     }
 

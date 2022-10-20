@@ -19,6 +19,7 @@ public class Lexer {
     private static final Map<Character, TokenType> ONE_CHAR_TOKENS = new HashMap<>(Map.ofEntries(
         // Syntax tokens
         // - SEMICOLON
+        entry(':', TokenType.COLON),
         entry(';', TokenType.SEMICOLON),
         // - Parenthesis, Braces and Brackes
         entry('(', TokenType.LPAREN), entry(')', TokenType.RPAREN),

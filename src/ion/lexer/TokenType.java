@@ -8,8 +8,8 @@ import static java.util.Map.entry;
 public enum TokenType {
     
     // Syntax tokens
-    // - SEMICOLON
-    SEMICOLON,
+    // - colons
+    COLON, SEMICOLON,
     // - Parenthesis, Braces and Brackes
     LPAREN, RPAREN,
     LBRACE, RBRACE,
@@ -72,6 +72,7 @@ public enum TokenType {
     private static final Map<TokenType, String> sourceStrings = new HashMap<>(Map.ofEntries(
         // Syntax tokens
         // - SEMICOLON
+        entry(TokenType.COLON, ":"),
         entry(TokenType.SEMICOLON, ";"),
         // - Parenthesis, Braces and Brackes
         entry(TokenType.LPAREN, "("),
